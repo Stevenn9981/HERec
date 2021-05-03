@@ -12,13 +12,13 @@ class metapathGeneration:
         self.canum = canum + 1
         self.cinum = cinum + 1
         ub = self.load_ub('../data/ub_0.8.train')
-        # self.get_UBU(ub, '../data/metapath/ubu_0.8.txt')
-        # self.get_UBCaBU(ub, '../data/bca.txt', '../data/metapath/ubcabu_0.8.txt')
-        # self.get_UBCiBU(ub, '../data/bci.txt', '../data/metapath/ubcibu_0.8.txt')
-        # self.get_BUB(ub, '../data/metapath/bub_0.8.txt')
-        # self.get_BCiB('../data/bci.txt', '../data/metapath/bcib_0.8.txt')
-        # self.get_BCaB('../data/bca.txt', '../data/metapath/bcab_0.8.txt')
-        # self.get_UBCa(ub, '../data/bca.txt', '../data/metapath/ubca_0.8.txt')
+        self.get_UBU(ub, '../data/metapath/ubu_0.8.txt')
+        self.get_UBCaBU(ub, '../data/bca.txt', '../data/metapath/ubcabu_0.8.txt')
+        self.get_UBCiBU(ub, '../data/bci.txt', '../data/metapath/ubcibu_0.8.txt')
+        self.get_BUB(ub, '../data/metapath/bub_0.8.txt')
+        self.get_BCiB('../data/bci.txt', '../data/metapath/bcib_0.8.txt')
+        self.get_BCaB('../data/bca.txt', '../data/metapath/bcab_0.8.txt')
+        self.get_UBCa(ub, '../data/bca.txt', '../data/metapath/ubca_0.8.txt')
         self.get_UCoU('../data/uco.txt', '../data/metapath/ucou_0.8.txt')
         self.get_UU('../data/uu.txt', '../data/metapath/uu_0.8.txt')
 

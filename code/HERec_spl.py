@@ -14,12 +14,13 @@ import torch
 def parse_args():
     parser = argparse.ArgumentParser(description="Run HERec.")
 
-    parser.add_argument('--um', type=str, default='all',
-                        help='Specify user meta-paths. "+" or "-" means only use or remove. "all" means use all meta-paths' )
-    parser.add_argument('--im', type=str, default='all',
-                        help='Specify item meta-paths. "+" or "-" means only use or remove. "all" means use all meta-paths' )
+    parser.add_argument('--um', type=int, default=1,
+                        help='Specify user meta-paths numbers')
+    parser.add_argument('--im', type=int, default=1,
+                        help='Specify item meta-paths numbers')
 
     return parser.parse_args()
+
 
 class HNERec:
     def __init__(self, unum, inum, ratedim, userdim, itemdim, user_metapaths, item_metapaths, trainfile, testfile,
@@ -193,7 +194,6 @@ class HNERec:
         vs = self.cal_vs()
         return self.U.dot(self.V.T) + self.reg_u * us.dot(self.H.T) + self.reg_v * self.E.dot(vs.T)
 
-
     def maermse(self):
         m = 0.0
         mae = 0.0
@@ -250,7 +250,7 @@ class HNERec:
                         [ui * (1 - ui) * x_t * (1 - x_t) * self.H[j, :]]).T.dot(
                         np.array([self.X[i][k]])) + self.beta_w * self.Wu[k]
                     bu_g = self.reg_u * -eij * ui * (1 - ui) * self.pu[i][k] * self.H[j, :] * x_t * (
-                                1 - x_t) + self.beta_b * self.bu[k]
+                            1 - x_t) + self.beta_b * self.bu[k]
                     # print pu_g
                     self.pu[i][k] -= 0.1 * self.delta * pu_g
                     self.Wu[k] -= 0.1 * self.delta * Wu_g
@@ -267,7 +267,7 @@ class HNERec:
                         [vj * (1 - vj) * y_t * (1 - y_t) * self.E[i, :]]).T.dot(
                         np.array([self.Y[j][k]])) + self.beta_w * self.Wv[k]
                     bv_g = self.reg_v * -eij * vj * (1 - vj) * self.pv[j][k] * self.E[i, :] * y_t * (
-                                1 - y_t) + self.beta_b * self.bv[k]
+                            1 - y_t) + self.beta_b * self.bv[k]
 
                     self.pv[j][k] -= 0.1 * self.delta * pv_g
                     self.Wv[k] -= 0.1 * self.delta * Wv_g
@@ -303,7 +303,6 @@ class HNERec:
         # et = time.time()
         # print('test time: ', et - st)
 
-
     def test_batch(self):
         user_ids = list(self.test_user_dict.keys())
         user_ids_batch = user_ids[:]
@@ -325,9 +324,9 @@ class HNERec:
 
         HR1, HR3, HR20, HR50, MRR10, MRR20, MRR50, NDCG10, NDCG20, NDCG50 = self.metrics(pos_logits, neg_logits)
         print("HR1 : %.4f, HR3 : %.4f, HR20 : %.4f, HR50 : %.4f, MRR10 : %.4f, MRR20 : %.4f, MRR50 : %.4f, "
-                     "NDCG10 : %.4f, NDCG20 : %.4f, NDCG50 : %.4f" % (HR1, HR3, HR20, HR50, MRR10.item(), MRR20.item(),
-                                                                      MRR50.item(), NDCG10.item(), NDCG20.item(),
-                                                                      NDCG50.item()))
+              "NDCG10 : %.4f, NDCG20 : %.4f, NDCG50 : %.4f" % (HR1, HR3, HR20, HR50, MRR10.item(), MRR20.item(),
+                                                               MRR50.item(), NDCG10.item(), NDCG20.item(),
+                                                               NDCG50.item()))
 
         return NDCG10.cpu().item()
 
@@ -342,7 +341,6 @@ class HNERec:
         ndcg_accu10 = torch.tensor(0)
         ndcg_accu20 = torch.tensor(0)
         ndcg_accu50 = torch.tensor(0)
-
 
         batch_neg_of_user = torch.split(batch_nega, 100, dim=0)
 
@@ -399,27 +397,24 @@ if __name__ == "__main__":
     user_metapath = args.um
     item_metapath = args.im
 
-    user_metapaths = ['ubu', 'ubcibu', 'ubcabu']
-    item_metapaths = ['bub', 'bcib', 'bcab']
+    user_metapaths = ['ubu']  # ['ubu', 'ubcibu', 'ubcabu']
+    item_metapaths = ['bub']  # ['bub', 'bcib', 'bcab']
 
-    if user_metapath[0] == '+':
-        if user_metapath[1:] == 'ubu':
-            user_metapaths = ['ubu']
-        elif user_metapath[1:] == 'ubcibu':
-            user_metapaths = ['ubcibu']
-        elif user_metapath[1:] == 'ubcabu':
-            user_metapaths = ['ubcabu']
-        elif user_metapath[1:] == 'ucou':
-            user_metapaths = ['ucou']
+    if user_metapath == 1:
+        user_metapaths = ['ubu']
+    elif user_metapath == 2:
+        user_metapaths = ['ubu', 'ubcibu']
+    elif user_metapath == 3:
+        user_metapaths = ['ubu', 'ubcibu', 'ubcabu']
+    elif user_metapath == 4:
+        user_metapaths = ['ubu', 'ubcibu', 'ubcabu', 'ucou']
 
-    if item_metapath[0] == '+':
-        if item_metapath[1:] == 'bub':
-            item_metapaths = ['bub']
-        elif item_metapath[1:] == 'bcib':
-            item_metapaths = ['bcib']
-        elif item_metapath[1:] == 'bcab':
-            item_metapaths = ['bcab']
-
+    if item_metapath == 1:
+        item_metapaths = ['bub']
+    elif item_metapath == 2:
+        item_metapaths = ['bub', 'bcib']
+    elif item_metapath == 3:
+        item_metapaths = ['bub', 'bcib', 'bcab']
 
     # user_metapaths = ['ubcibu', 'ubcabu']
     # user_metapaths = ['ubu', 'ubcabu']

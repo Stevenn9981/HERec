@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 nohup python -u HERec_spl.py --um +ubu --im +bub > ubu+bub.txt 2>&1 &
 nohup python -u HERec_spl.py --um +ubcibu --im +bub > ubcibu+bub.txt 2>&1 &
 nohup python -u HERec_spl.py --um +ubcabu --im +bub > ubcabu+bub.txt 2>&1 &

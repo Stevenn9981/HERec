@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 nohup python -u HERec_spl.py --um 1 --im 1 > 1+1.txt 2>&1 &
 nohup python -u HERec_spl.py --um 2 --im 1 > 2+1.txt 2>&1 &
 nohup python -u HERec_spl.py --um 3 --im 1 > 3+1.txt 2>&1 &

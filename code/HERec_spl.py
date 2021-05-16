@@ -392,6 +392,8 @@ if __name__ == "__main__":
     itemdim = 10
     train_rate = 0.8  # sys.argv[1]
 
+    t1 = time.time()
+
     args = parse_args()
 
     user_metapath = args.um
@@ -438,7 +440,7 @@ if __name__ == "__main__":
     # item_metapaths = ['bub_'+str(train_rate)+'.embedding', 'bcib.embedding', 'bcab.embedding']
     trainfile = '../data/ub_' + str(train_rate) + '.train'
     testfile = '../data/ub_' + str(train_rate) + '.test'
-    steps = 3
+    steps = 100
     delta = 0.02
     beta_e = 0.1
     beta_h = 0.1
@@ -455,3 +457,5 @@ if __name__ == "__main__":
 
     HNERec(unum, inum, ratedim, userdim, itemdim, user_metapaths, item_metapaths, trainfile, testfile, steps, delta,
            beta_e, beta_h, beta_p, beta_w, beta_b, reg_u, reg_v)
+
+    print('All time: ', time.time() - t1)
